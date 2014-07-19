@@ -1,0 +1,43 @@
+#box {
+	/*height: 300px;*/
+	/*width: 600px;*/
+	border: 1px solid grey;
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+button {
+	margin: 0 auto;
+	text-align: center;
+}
+
+
+.pokeChar {
+    /*float: left;*/
+    display: inline-block;
+    position: relative;
+    border: 1px solid lightgray;
+    height:190px;
+    width: 140px;
+    vertical-align: top;
+}
+
+
+.pokeChar img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.inactive {
+    visibility: hidden;
+}
+
+.active {
+
+}
+
+.pokemon, .pokemonTeam {
+    text-align: center;
+}
