@@ -30,7 +30,7 @@ button {
 }
 
 
-.inactive {
+.inactive h3, .inactive img {
     visibility: hidden;
 }
 
@@ -40,4 +40,9 @@ button {
 
 .pokemon, .pokemonTeam {
     text-align: center;
+}
+
+.narrow {
+ width: 570px;
+ margin: 0 auto;
 }

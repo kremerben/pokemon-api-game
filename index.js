@@ -1,40 +1,57 @@
 $(document).ready(function() {
 
+var MATCHGAMECARDS = 6;
 
 
+
+var randPoke = function() {
+    return Math.floor((Math.random() * 719) + 2);
+};
+
+
+
+// MATCH GAME
 $('#matchGame').on('click', function() {
-    $('.pokemon').empty();
-    $('.pokemonTeam').empty();
+    $('.pokemon').empty().addClass('narrow');
+//    $('.pokemonTeam').empty();
+    var matchArray = [];
+    for (var i = 0; i < MATCHGAMECARDS; i++) {
+        var num = randPoke();
+        matchArray.push(num, num);
+    }
+    shuffle(matchArray);
+    $.each(matchArray, function(index, num) {
+        singlePokemon(num, 'inactive');
+    });
+});
 
-    makePokemon(6);
-//    clonePokemon();
-    $(document).getElementById('box').clone().append(".pokemon");
+
+$(document).on('click', '.pokeChar', function() {
+    $(this).removeClass('inactive');
+    $(this).addClass('active');
+//    if ($('.active').length > )
 
 
 });
 
-//var clonePokemon = function() {
-//    $(document).on('click', '#matchGame',  function() {
-//                $('#box').clone().append(".pokemon");
-//        });
-//}
 
 
+// SINGLE POKEMON
 $('#pokeSingle').on('click', function() {
     $('.pokemon').empty();
     $('.pokemonTeam').empty();
-    makePokemon(1);
-
+    singlePokemon(randPoke());
 });
 
+// TEAM OF POKEMON WITH PAUSE
 $('#pokeTeam').on('click', function() {
-    $('.pokemon').empty();
+    $('.pokemon').empty().removeClass('narrow');
     $('.pokemonTeam').empty();
         var teamNum = 6;
         var counter = 0;
         function pauseLoop() {
             if (counter++ < teamNum) {
-                makePokemon(1);
+                multiPokemon(1);
                 setTimeout(pauseLoop, 200);
             }
         }
@@ -42,11 +59,17 @@ $('#pokeTeam').on('click', function() {
 });
 
 
-var makePokemon = function(num) {
-    for (var i = 0; i < num; i++ ) {
-        var randPoke = Math.floor((Math.random() * 719) + 2);
+// LOOPING POKEMON
+var multiPokemon = function(num) {
+    for (var i = 0; i < num; i++) {
+        singlePokemon(randPoke(), "");
+    }
+};
+
+//MAKING A POKEMON
+var singlePokemon = function(pokemonNumber, addclass) {
         $.ajax({
-            url: "http://pokeapi.co/api/v1/sprite/" + randPoke + '/',
+            url: "http://pokeapi.co/api/v1/sprite/" + pokemonNumber + '/',
             type: "GET",
             dataType: "jsonp",
             success: function (data) {
@@ -58,24 +81,24 @@ var makePokemon = function(num) {
                 var pokeDiv = document.createElement("div");
                 pokeDiv.id = pokemon.id;
                 pokeDiv.innerHTML = '<h3>' + pokemon.name + ' - ' + pokemon.id + '</3>';
-                $(pokeDiv).addClass('pokeChar');
+                $(pokeDiv).addClass('pokeChar').addClass(addclass);
                 $('.pokemon').append(pokeDiv);
-//            $(pokeDiv).append('<a href="http://pokemondb.net/pokedex/'+ pokemon.name +'" target="_blank"><img src="' + pokemon.image + '" /></a>');
                 $(pokeDiv).append('<img src="' + pokemon.image + '" />');
             }
         });
     }
+
+
+function shuffle(array) {
+    var current = array.length, temp, rand;
+    while (0 !== current) {
+        rand = Math.floor(Math.random() * current);
+        current -= 1;
+        temp = array[current];
+        array[current] = array[rand];
+        array[rand] = temp;
+    }
+    return array;
 };
 
-
-});
-
-
-$.ajax({
-  type: "POST",
-  url: 'http://challenge.outsidehacks.com/',
-  success: function(data) {
-      console.log(data);
-  },
-  dataType: 'jsonp'
 });
