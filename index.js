@@ -1,17 +1,12 @@
 $(document).ready(function() {
 
-var MATCHGAMECARDS = 6;
+var MATCHGAMECARDS = 4;
+var score = 0;
 
 
-
-var randPoke = function() {
-    return Math.floor((Math.random() * 719) + 2);
-};
-
-
-
-// MATCH GAME
+// MATCH GAME SETUP
 $('#matchGame').on('click', function() {
+    score = 0;
     $('.pokemon').empty().addClass('narrow');
 //    $('.pokemonTeam').empty();
     var matchArray = [];
@@ -25,37 +20,81 @@ $('#matchGame').on('click', function() {
     });
 });
 
-
+// MATCH GAMEPLAY
+var liveCards = [];
 $(document).on('click', '.pokeChar', function() {
-    $(this).removeClass('inactive');
-    $(this).addClass('active');
-//    if ($('.active').length > )
-
+    score++;
+    if (liveCards.length < 2 && $(this).hasClass('inactive')) {
+        liveCards.push($(this));
+        $(this).removeClass('inactive');
+        $(this).addClass('active');
+    }
+    if (liveCards.length > 1 ) {
+        if (liveCards[0].attr('id') === liveCards[1].attr('id')) {
+            $(liveCards[0]).addClass('found');
+            $(liveCards[1]).addClass('found');
+        } else {
+            removeWithPause(liveCards);
+        }
+        liveCards = [];
+    }
+    if ($('.found').length === MATCHGAMECARDS * 2) {
+          $('#overlay').toggle('slow');
+          $('#overlay span').html('<br><h1>Winner in ' + score + ' clicks!');
+    }
 
 });
 
+// FLIP BACK OVER
+var removeWithPause = function(cards) {
+        var upTo = 2;
+        var counter = 0;
+        function pauseLoop() {
+            if (counter++ < upTo) {
+                if (counter === 2) {
+                    $(cards[0]).removeClass('active').addClass('inactive');
+                    $(cards[1]).removeClass('active').addClass('inactive');
+                }
+                setTimeout(pauseLoop, 1000);
+            }
+        }
+        pauseLoop();
+};
+
+//OVERLAY CLEAR
+$(document).on('click', '#overlay', function() {
+    $('#overlay').toggle('slow');
+});
 
 
 // SINGLE POKEMON
 $('#pokeSingle').on('click', function() {
     $('.pokemon').empty();
-    $('.pokemonTeam').empty();
     singlePokemon(randPoke());
 });
 
+
+
 // TEAM OF POKEMON WITH PAUSE
+var teamPokemon = [];
 $('#pokeTeam').on('click', function() {
+    teamPokemon = [];
     $('.pokemon').empty().removeClass('narrow');
-    $('.pokemonTeam').empty();
         var teamNum = 6;
         var counter = 0;
         function pauseLoop() {
             if (counter++ < teamNum) {
-                multiPokemon(1);
+                teamPokemon.push(multiPokemon(1));
                 setTimeout(pauseLoop, 200);
             }
         }
         pauseLoop();
+    console.log(teamPokemon.length);
+//    if (teamPokemon.length === 6) {
+        var playThisTeam = document.createElement('button');
+        $(playThisTeam, this).text("Play the Match Game with this Team");
+        $('.pokemon').append(playThisTeam);
+//    }
 });
 
 
@@ -84,9 +123,10 @@ var singlePokemon = function(pokemonNumber, addclass) {
                 $(pokeDiv).addClass('pokeChar').addClass(addclass);
                 $('.pokemon').append(pokeDiv);
                 $(pokeDiv).append('<img src="' + pokemon.image + '" />');
+                return pokemon
             }
         });
-    }
+    };
 
 
 function shuffle(array) {
@@ -99,6 +139,13 @@ function shuffle(array) {
         array[rand] = temp;
     }
     return array;
+}
+
+var randPoke = function() {
+    return Math.floor((Math.random() * 719) + 2);
 };
+
+
+
 
 });

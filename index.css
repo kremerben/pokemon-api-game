@@ -6,36 +6,57 @@
 	text-align: center;
 }
 
+h3 {
+        margin: 2em auto 0px;
+}
 
 button {
 	margin: 0 auto;
 	text-align: center;
 }
 
+.pokemon {
+        margin-top: 30px ;
+}
 
 .pokeChar {
     /*float: left;*/
     display: inline-block;
     position: relative;
     border: 1px solid lightgray;
-    height:190px;
-    width: 140px;
+    height:170px;
+    width: 170px;
     vertical-align: top;
+        border-radius: 50%;
 }
-
 
 .pokeChar img {
     max-width: 100%;
     max-height: 100%;
+    margin: 0 auto;
+
 }
 
+
+.inactive {
+    /*background-color: orange;*/
+    background: url('images/pokeball.png') 50% center no-repeat transparent;
+}
 
 .inactive h3, .inactive img {
     visibility: hidden;
 }
 
 .active {
+    background-color: transparent;
+}
 
+.found {
+    pointer-events: none;
+}
+
+.found h3, .found img {
+    visibility: visible;
 }
 
 .pokemon, .pokemonTeam {
@@ -43,6 +64,35 @@ button {
 }
 
 .narrow {
- width: 570px;
- margin: 0 auto;
+ width: 700px;
+ margin: 30px auto 0;
+}
+
+#overlay {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1000;
+    display: none;
+    background-color: #164357;
+    color: #FFF;
+    text-align: center;
+}
+
+.found
+{
+  -webkit-animation: glow 500ms ease-in-out 100ms ;
+  animation: glow 500ms  ease-in-out 100ms;
+}
+
+@-webkit-keyframes glow
+{
+  50% { box-shadow: 0 0 80px #ff581c; }
+}
+
+@keyframes glow
+{
+  50% { box-shadow: 0 0 80px #ff581c; }
 }
