@@ -1,15 +1,15 @@
 $(document).ready(function() {
 
-var MATCHGAMECARDS = 4;
+var MATCHGAMECARDS = 6;
 var score = 0;
 
 
 // MATCH GAME SETUP
 $('#matchGame').on('click', function() {
     $('#playThisTeamButton').remove();
+    $('#playThisTeamButton2').remove();
     score = 0;
     $('.pokemon').empty().addClass('narrow');
-//    $('.pokemonTeam').empty();
     var matchArray = [];
     for (var i = 0; i < MATCHGAMECARDS; i++) {
         var num = randPoke();
@@ -118,6 +118,8 @@ $(document).on('click', '#clearTeam', function() {
 // TEAM OF POKEMON WITH PAUSE
 var teamPokemon = [];
 $('#pokeTeam').on('click', function() {
+    $('#playThisTeamButton2').remove();
+    $('#playThisTeamButton').remove();
     teamPokemon = [];
     $('.pokemon').empty().removeClass('narrow');
         var teamNum = 6;
