@@ -6,41 +6,58 @@
 	text-align: center;
 }
 
-h3 {
-        margin: 2em auto 0px;
-}
-
-button {
+#box2 {
+	border: 1px solid grey;
 	margin: 0 auto;
 	text-align: center;
 }
 
-.pokemon {
+h3 {
+        margin: 33px auto 0px;
+        color: #FFF;
+}
+
+button {
+	margin: 10px;
+	text-align: center;
+}
+
+.pokemon, .specialTeam {
         margin-top: 30px ;
+    color:white;
+}
+
+.specialTeam {
+margin-top: 0px ;
+    color: #000000;
+background-color: #e7ecff;
 }
 
 .pokeChar {
     /*float: left;*/
     display: inline-block;
     position: relative;
-    border: 1px solid lightgray;
+    border: 1px double lightgray;
     height:170px;
     width: 170px;
     vertical-align: top;
         border-radius: 50%;
+        background: url('images/pokeball.png') 50% center no-repeat transparent;
+
 }
 
 .pokeChar img {
     max-width: 100%;
     max-height: 100%;
     margin: 0 auto;
-
+    -webkit-filter: drop-shadow(12px 12px 7px rgba(0,0,0,0.5));
+    color: #FFF;
 }
 
 
 .inactive {
     /*background-color: orange;*/
-    background: url('images/pokeball.png') 50% center no-repeat transparent;
+    /*background: url('images/pokeball.png') 50% center no-repeat transparent;*/
 }
 
 .inactive h3, .inactive img {
@@ -48,8 +65,23 @@ button {
 }
 
 .active {
-    background-color: transparent;
+    background: transparent;
 }
+.active h3 {
+    color:#000;
+}
+.active::after {
+  content: "";
+  background: url('images/pokeball.png');
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 
 .found {
     pointer-events: none;

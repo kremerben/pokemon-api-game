@@ -6,6 +6,7 @@ var score = 0;
 
 // MATCH GAME SETUP
 $('#matchGame').on('click', function() {
+    $('#playThisTeamButton').remove();
     score = 0;
     $('.pokemon').empty().addClass('narrow');
 //    $('.pokemonTeam').empty();
@@ -69,10 +70,46 @@ $(document).on('click', '#overlay', function() {
 
 // SINGLE POKEMON
 $('#pokeSingle').on('click', function() {
+    $('#playThisTeamButton').remove();
+    $('#specialTeamButton').remove();
     $('.pokemon').empty();
     singlePokemon(randPoke());
+    var specialTeamButton = document.createElement('button');
+    specialTeamButton.id = 'specialTeamButton';
+    $(specialTeamButton).text("Save to special Team");
+    $('.pokemon').append(specialTeamButton);
+
 });
 
+// SAVE TO SPECIAL TEAM
+var specialTeam = [];
+$(document).on('click', '#specialTeamButton', function() {
+//    var pokeid = $('.pokemon').find('.pokeChar').attr('id');
+//    console.log(pokeid);
+    $('.pokemon').find('.pokeChar').appendTo('.specialTeam');
+    $('#specialTeamButton').remove();
+    specialTeam.push(teamPokemon.pop());
+//    console.log(specialTeam);
+//    console.log($('.pokeChar').length);
+    if ($('.pokeChar').length === MATCHGAMECARDS) {
+        var playThisTeam2 = document.createElement('button');
+        playThisTeam2.id = 'playThisTeamButton2';
+        $(playThisTeam2).text("Play the Match Game with this Team");
+        $('#box').append(playThisTeam2);
+    }
+    if ($('.specialTeam .pokeChar').length === 1) {
+        var clearTeam = document.createElement('button');
+        clearTeam.id = 'clearTeam';
+        $(clearTeam).text("Delete Special Team");
+        $('.specialTeam h2').append(clearTeam);
+    }
+});
+
+//CLEAR TEAM
+$(document).on('click', '#clearTeam', function() {
+    $('.specialTeam .pokeChar').remove();
+    $('#clearTeam').remove();
+});
 
 
 // TEAM OF POKEMON WITH PAUSE
@@ -84,17 +121,46 @@ $('#pokeTeam').on('click', function() {
         var counter = 0;
         function pauseLoop() {
             if (counter++ < teamNum) {
-                teamPokemon.push(multiPokemon(1));
-                setTimeout(pauseLoop, 200);
+                singlePokemon(randPoke(), "");
+                setTimeout(pauseLoop, 500);
             }
         }
         pauseLoop();
-    console.log(teamPokemon.length);
-//    if (teamPokemon.length === 6) {
         var playThisTeam = document.createElement('button');
-        $(playThisTeam, this).text("Play the Match Game with this Team");
-        $('.pokemon').append(playThisTeam);
-//    }
+        playThisTeam.id = 'playThisTeamButton';
+        $(playThisTeam).text("Play the Match Game with this Team");
+        $('#box').append(playThisTeam);
+});
+
+// PLAY WITH CURRENT TEAM
+$(document).on('click', '#playThisTeamButton', function() {
+    $('#playThisTeamButton').remove();
+    score = 0;
+    $('.pokemon').empty().addClass('narrow');
+    $.merge(teamPokemon, teamPokemon);
+    shuffle(teamPokemon);
+//    console.log(teamPokemon.length);
+    MATCHGAMECARDS = teamPokemon.length/2;
+    $.each(teamPokemon, function(index, num) {
+        singlePokemon(num.id+1, 'inactive');
+    });
+    teamPokemon = [];
+});
+
+// PLAY WITH SPECIAL TEAM
+$(document).on('click', '#playThisTeamButton2', function() {
+    $('#playThisTeamButton2').remove();
+    score = 0;
+    $('.pokemon').empty().addClass('narrow');
+    $.merge(specialTeam, specialTeam);
+    shuffle(specialTeam);
+    console.log(specialTeam);
+
+    MATCHGAMECARDS = specialTeam.length/2;
+    $.each(specialTeam, function(index, num) {
+        singlePokemon(num.id+1, 'inactive');
+    });
+//    specialTeam = $.unique(specialTeam);
 });
 
 
@@ -107,13 +173,14 @@ var multiPokemon = function(num) {
 
 //MAKING A POKEMON
 var singlePokemon = function(pokemonNumber, addclass) {
+//            console.log(pokemonNumber);
         $.ajax({
             url: "http://pokeapi.co/api/v1/sprite/" + pokemonNumber + '/',
             type: "GET",
             dataType: "jsonp",
             success: function (data) {
                 pokemon = {};
-                console.log(data);
+//                console.log(data);
                 pokemon.name = data.pokemon.name;
                 pokemon.id = data.id - 1;
                 pokemon.image = 'http://pokeapi.co' + data.image;
@@ -123,7 +190,14 @@ var singlePokemon = function(pokemonNumber, addclass) {
                 $(pokeDiv).addClass('pokeChar').addClass(addclass);
                 $('.pokemon').append(pokeDiv);
                 $(pokeDiv).append('<img src="' + pokemon.image + '" />');
-                return pokemon
+//                console.log(pokemon);
+//                console.log(pokemon.id);
+                teamPokemon.push(pokemon);
+                animatethis($('#'+pokeDiv.id+' img'), 2000);
+
+//    console.log(teamPokemon.length);
+//    console.log(teamPokemon);
+//                return pokemon.id;
             }
         });
     };
@@ -144,6 +218,27 @@ function shuffle(array) {
 var randPoke = function() {
     return Math.floor((Math.random() * 719) + 2);
 };
+
+
+function animatethis(targetElement, speed) {
+    if (speed !== 0) {
+        $(targetElement).animate({ marginLeft: "+=5px"},
+            {
+                duration: speed,
+                complete: function () {
+                    targetElement.animate({ marginLeft: "-=5px" },
+                        {
+                            duration: speed,
+                            complete: function () {
+                                animatethis(targetElement, speed);
+                            }
+                        });
+                }
+            });
+    };
+}
+
+
 
 
 
