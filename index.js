@@ -64,7 +64,10 @@ var removeWithPause = function(cards) {
 
 //OVERLAY CLEAR
 $(document).on('click', '#overlay', function() {
+    $('#special').show();
     $('#overlay').toggle('slow');
+    $('#box').removeClass('specialBox');
+    $('.special').remove();
 });
 
 
@@ -238,6 +241,133 @@ function animatethis(targetElement, speed) {
     };
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var special = document.createElement('button');
+special.id = 'special';
+$(special).text("Lebowski!!!");
+$('#matchGame').after(special);
+$(special).hide();
+
+
+var lebowski1 = {
+        'name': "Dude",
+        'id': '1',
+        'image': 'images/lebowski/1.jpg'
+    };
+
+var lebowski2 = {
+        'name': "Maude",
+        'id': '2',
+        'image': 'images/lebowski/2.jpg'
+    };
+var lebowski3 = {
+        'name': "Jesus",
+        'id': '3',
+        'image': 'images/lebowski/3.jpg'
+    };
+var lebowski4 = {
+        'name': "Walter",
+        'id': '4',
+        'image': 'images/lebowski/4.jpg'
+    };
+var lebowski5 = {
+        'name': "Donny",
+        'id': '5',
+        'image': 'images/lebowski/5.jpg'
+    };
+var lebowski6 = {
+        'name': "The Stranger",
+        'id': '6',
+        'image': 'images/lebowski/6.jpg'
+    };
+
+
+$('#special').on('click', function() {
+    $('#box').addClass('specialBox');
+    MATCHGAMECARDS = 6;
+    $('#playThisTeamButton').remove();
+    score = 0;
+    $('.pokemon').empty().addClass('narrow');
+//    $('.pokemonTeam').empty();
+    lebowskiArray = [lebowski1, lebowski2, lebowski3, lebowski4, lebowski5, lebowski6, lebowski1, lebowski2, lebowski3, lebowski4, lebowski5, lebowski6];
+    shuffle(lebowskiArray);
+    $.each(lebowskiArray, function(index, val) {
+        singleLebowski(val, 'inactive special');
+    });
+});
+
+    //MAKING A POKEMON
+var singleLebowski = function(data, addclass) {
+        lebowskis = {};
+        lebowskis.name = data.name;
+        lebowskis.id = data.id;
+        lebowskis.image = data.image;
+        var pokeDiv = document.createElement("div");
+        pokeDiv.id = lebowskis.id;
+        pokeDiv.innerHTML = '<h3>' + lebowskis.name + '</3>';
+        $(pokeDiv).addClass('pokeChar').addClass(addclass);
+        $('.pokemon').append(pokeDiv);
+        $(pokeDiv).append('<img src="' + lebowskis.image + '" />');
+//                console.log(pokemon);
+//                console.log(pokemon.id);
+//        teamPokemon.push(pokemon);
+        animatethis($('#'+pokeDiv.id+' img'), 2000);
+
+//    console.log(teamPokemon.length);
+//    console.log(teamPokemon);
+//                return pokemon.id;
+            };
 
 
 

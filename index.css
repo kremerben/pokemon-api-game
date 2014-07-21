@@ -1,9 +1,14 @@
+body {
+}
+
+
 #box {
 	/*height: 300px;*/
 	/*width: 600px;*/
 	border: 1px solid grey;
 	margin: 0 auto;
 	text-align: center;
+
 }
 
 #box2 {
@@ -127,4 +132,26 @@ background-color: #e7ecff;
 @keyframes glow
 {
   50% { box-shadow: 0 0 80px #ff581c; }
+}
+
+
+.special::after {
+  content: "";
+  background: url('images/lebowski/bowlingball.jpg');
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.special {
+    background: url('images/lebowski/bowlingball.jpg') 50% center no-repeat transparent;
+}
+
+.specialBox {
+            background: url('images/lebowski/rug-1.jpg') 50% center transparent;
+
 }
